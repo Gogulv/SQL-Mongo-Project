@@ -1,0 +1,20 @@
+Question
+Which forest had the least number of fires?
+
+Notes/Comments About SQL Query and Results (Include # of Rows in Result)
+1. We assume every entry in the Fire table as a wildfire. We run the query to find the least number of fires for each forest and order by the name of the forest.
+
+Our output contains records which are grouped by forest name and respective wildfires count. The number of records obtained are 195. Thus, 195 forests have wildfires that have a count of 1 and are the least wildfires.
+
+Translation
+
+Clean up -> Select the forest name and count of forests joining fires table, fpa_source_data table and  nwcgreporting table having count of forests as 1
+
+Translation -> Select forest name, count from fires join fpa_source_data join nwcgreporting group by forest name having count = 1
+
+Code ->
+select nwcg_reporting_unit_name,count(F.FOD_ID) as count
+from fire F  join fpa_source_data FSD on F.fpa_id1 = FSD.fpa_id 
+ join nwcgreporting NWCG on FSD.NWCG_REPORTING_UNIT_ID1 = NWCG.NWCG_REPORTING_UNIT_ID
+group by nwcg_reporting_unit_name having count(f.fod_id)=1
+order by 2;
