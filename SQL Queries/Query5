@@ -1,0 +1,19 @@
+Question
+Which state had more fires in the first half of a calendar year than the second half of the calendar year?
+
+Notes/Comments About SQL Query and Results (Include # of Rows in Result)
+1. We assume every entry in the Fire table as a wildfire. We have assumed that every fire was discovered and contained in the same year.
+Hence, we segregate the fires that occurred before 6 months (0 - 182 days) and after 6 months (182- 365) for any particular calendar year. 2. We then compare these 2 values to obtain the states which had more fires in the first half of the year than the second half of the year. 
+
+Our output contains documents grouped by state name and count of fires in first half and second half of calendar year. The number of rows obtained here is 40 corresponding to the 40 states which has fires more fires in the first half than second half. 
+
+Translation
+
+Cleanup -> Select state, first half days and second half days from fir_cal (select first half count and state from fire table where DISCOVERY_DOY<=182) and sec_cal (select second half count and state from fire table where DISCOVERY_DOY>=183) where first half count greator than second half.
+
+Translation -> Cleanup -> Select state, first half days, second half days from fir_cal (select first half count , state from fire table where DISCOVERY_DOY<=182) and sec_cal (select second half count, state from fire table where DISCOVERY_DOY>=183) where first half count > second half.
+
+Code -> 
+select Fir_Cal.state as STATE, Fir_Cal.firsthalf as "No of fires in First half", Sec_Cal.secondhalf as "No of fires in second half" 
+from  (select count(fod_id) as firsthalf, state from fire fh where DISCOVERY_DOY<=182 group by state ) as Fir_Cal  
+join  (select state,count(fod_id) as secondhalf from fire fh where DISCOVERY_DOY >=183 group by state ) as Sec_Cal  on Fir_Cal.state = Sec_Cal.state where Fir_Cal.firsthalf > Sec_Cal.secondhalf order by 1;
