@@ -1,0 +1,19 @@
+Question
+One of the reporting agencies has suggested that children be banned from its forests unless there is one adult for every 3 children in a group visiting a forest. Name 3 forests where this would be the least appropriate.
+
+Notes/Comments About SQL Query and Results (Include # of Rows in Result)
+1.	We assume every entry in the Fire table as a wildfire.
+2.	We have filtered for STAT_CAUSE_DESC as “Children” to obtain the count of forests. We have assumed that to stop the fires due to children, we need to concentrate on forests where the fire is caused by children and enforce this rule. But if very least number of forest fires are caused by children, this rule is inefficient because we are wasting the adult supervision for the same. Hence, we have concentrated on forests with least count where this rule could be lease appropriate.
+3.	We have obtained 3 rows with forest name and count of fires.
+
+Translation
+Cleanup -> Select forest name and count of fire from Fire table join fp_source_data table join nwcgreporting table join stat_info table where stat_cause_code is children and display 3 names
+Translation -> Select forest, count from Fire join fp_source_data join nwcgreporting join stat_info where stat_cause_code is children limit 3
+
+Code ->
+select nwcg_reporting_unit_name,count(F.FOD_ID) as count
+from fire F  join fpa_source_data FSD on F.fpa_id1 = FSD.fpa_id 
+ join nwcgreporting NWCG on FSD.NWCG_REPORTING_UNIT_ID1 = NWCG.NWCG_REPORTING_UNIT_ID
+join stat_info si on si.STAT_CAUSE_CODE=F.STAT_CAUSE_CODE1 where STAT_CAUSE_DESC='Children'
+group by nwcg_reporting_unit_name
+order by 2,1 limit 3;
