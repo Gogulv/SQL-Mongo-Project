@@ -1,0 +1,19 @@
+Question
+What were the forests that had no fires that lasted more than two days?
+
+Notes/Comments About SQL Query and Results (Include # of Rows in Result)
+1.	As we need to have fires no fires more than 2 days, we assume that 2 days means a difference of 1. i.e if Discovery_DOY is 200 and contained_DOY is 201, then their difference is 2 whereas absolute difference 1.
+2.	We assume every entry in the Fire table as a wildfire. We have assumed that every fire was discovered and contained in the same year. Hence, we subtract Discovery_DOY and contained_DOY which gives us the duration of fire.
+
+Our output contains records grouped by forest names and count of fires in the forest that were contained before 2 days. We have obtained 1210 records of forests.
+
+Translation
+
+Cleanup -> Select forest name from fire join fpa_source_data join nwcgreporting table where difference between Discovery_DOY and contained_DOY is less than equal to 1
+Translation -> Select forest name from fire join fpa_source_data join nwcgreporting where difference of Discovery_DOY and contained_DOY <= 1
+
+Code ->
+select distinct NWCG.nwcg_reporting_unit_name as forestname  from fire F  join 
+fpa_source_data FSD on F.fpa_id1 = FSD.fpa_id 
+ join nwcgreporting NWCG on FSD.NWCG_REPORTING_UNIT_ID1 = NWCG.NWCG_REPORTING_UNIT_ID
+  where (F.CONT_DOY-F.DISCOVERY_DOY)<=1 group by NWCG.nwcg_reporting_unit_name;
