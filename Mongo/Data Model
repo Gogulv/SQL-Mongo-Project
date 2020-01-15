@@ -1,0 +1,20 @@
+Assumptions/Notes About Data Collections, Attributes and Relationships between Collections
+
+1.	We have loaded the whole database in mongo because we assumed the need to validate the SQL queries and SQL data base model with the queries in mongo from the actual data. 
+2.	Data in Mongo is loaded through command prompt and visualized through compass.
+3.	We have loaded the fires table and nwcg table into the mongo database.
+4.	The data manipulation and the execution of queries is done through the command prompt.
+5.	Mongodb Compass was used to verify the data execution and display the data in a graphical user interface.
+6.	Thus, we came to a conclusion that there was no problem with the commands written and executed at the command prompt for mongodb.
+7.	The results for Mongodb result set is verified with Mysql and successfully validated the results.
+8.	The relationships were automatically referenced using the sub-documents concept in Mongodb while importing the data into Mongodb.
+9.	The data used in building the database in Mysql was used to build the database, collections and documents of Mongodb.
+
+
+Physical Mongo Database
+
+Assumptions/Notes About Data Set
+
+1.	We assumed that every document in the database is unique. Every entry is assumed to be a wildfire.
+2.	We have dropped the shape attribute in the database as it did not convey any information about the data.
+3.	We have converted the julian to Gregorian date value before importing the data into the mongo framework.
