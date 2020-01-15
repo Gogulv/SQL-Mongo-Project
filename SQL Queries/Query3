@@ -1,0 +1,19 @@
+Question
+One advocacy group says human actions and not Nature is to blame for most wildfires. Write a query that supports this statement.
+
+Notes/Comments About SQL Query and Results (Include # of Rows in Result)
+1. We assume every entry in the Fire table as a wildfire. We have filtered the STAT_CAUSE_CODE to specific actions for humans and nature.
+Human Actions are -> Arson, Children, Equipment Use, Smoking, Campfire, RailRoad, PowerLine, Fireworks, Debris Burning
+Nature Actions are -> Lightning
+2. We have consolidated the count of fires by humans and nature separately. By the following result, we conclude that fires due to human actions are more than fires due to nature causes.
+3. We have obtained 1111469 fire records due to human nature and 278468 fire record due to nature cause. Hence, we conclude that human actions cause more fires than nature cause. 
+
+Translation
+
+Cleanup -> Select the count of human cause and nature cause by joining fire and stat_info table
+Translation -> Select count of human cause, nature cause from fire join stat_info where stat_cause_desc is in ("Children","Arson","Equipment Use","Smoking","Campfire","Debris“, Burning", "Powerline","Structure", "Railroad","Fireworks")
+
+Code -> 
+select count(FOD_ID) as human,(select count(FOD_ID) from fire f join stat_info si on f.STAT_CAUSE_CODE1=si.STAT_CAUSE_CODE where si.STAT_CAUSE_DESC in ('Lightning')) as nature
+from fire f join stat_info si on f.STAT_CAUSE_CODE1=si.STAT_CAUSE_CODE 
+where si.STAT_CAUSE_DESC in ("Children","Arson","Equipment Use","Smoking","Campfire","Debris Burning","Powerline","Structure","Railroad","Fireworks") ;
