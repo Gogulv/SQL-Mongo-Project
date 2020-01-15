@@ -1,0 +1,19 @@
+Question
+A leading beverage company has announced a billion-dollar fund for removing debris from forests, rivers and mountains in the US. All states are interested. Which state has the least chance to win a share of the fund?
+
+Notes/Comments About SQL Query and Results (Include # of Rows in Result)
+
+1.	We have assumed that the fund share is directly proportional to the effort/amount of debris removed. Hence, we search for the least amount of debris involved in a forest of a state. Hence it is the least fires caused by debris.
+2.	We have assumed that there is only one NWCG reporting unit agency corresponding to a specific forest and multiple source reporting agency can contribute towards a specific NWCG reporting unit agency. Hence each NWCG reporting agency is only associated with one forest and hence we assume NWCG reporting agency for forest name.
+3.	We have filtered the stat_Cause_code for “Debris burning”. The question aims at solving for debris burning by monetary incentives for removing debris. 
+4.	We have limited the row count to 1 as we are interested in obtaining the least state that wished to win a share of the fund. Hence Number of rows in result -> 1
+
+Translation –
+Clean up – select state and count of fires from fire table join stat_info table where stat_cause_desc is 'Debris Burning'
+Translation – select state, count from fires join stat_info where stat_cause_desc is 'Debris Burning'
+
+Code -
+select F.state, count(F.fod_id) as size_of_fires from fire F join stat_info si on si.STAT_CAUSE_CODE=F.STAT_CAUSE_CODE1 where si.STAT_CAUSE_DESC='Debris Burning'  
+ group by F.state  order by 2 asc limit 1;
+
+We have limited the output to 1 to obtain the least wildfire count state. The count is 2 for state DC. 
