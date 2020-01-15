@@ -1,0 +1,28 @@
+Assumptions/Notes About Data Entities and Relationships
+
+We decided that the Source_Data table acts as an entity that collects data from all entities, thus creating a detailed description of the fire.
+Our primary assumption is that fpa_source_data table collects details of the fire from the source_reporting table, Local table, Owner table, Fire table, Incident table and the respective NWCG_reporting table and compiles the report. This is the flow of data we have assumed.
+Assumptions:
+1.	Assumed that FPA_ID is unique across and it collects data from all tables. Thus, the Fpa_source_data table is the main source table that links all the tables to compile data of the fire.
+2.	There is a one to many relationship between NWCG_Reporting table and Fpa_source_data table as one reporting agency can report multiple fires.
+3.	There is a one to many relationship between Source_Reporting table and Fpa_source_data table as one source agency can report multiple fires.
+4.	The fire table contains the fire description and is linked to the Fpa_source_data table in a one to many relationship. Thus, the Fpa_source_data table collects data from fires table. 
+5.	The fire table consists of data that describes the fire. That is, the details that define the fire, fire_code, fire_name, Discovery_DOY, Discovery_date, Discovery_Time, Cont_DOY, Cont_Time, Latitude, Longitude, State, Cont_Date. The Fire Table is linked with fire_size table, FIPS table, MTBS table, Stat_Info table with a zero to many relationship.
+6.	The Owner table consists of owner details and owner description and is linked with the Fpa_source_data table in a one to many relationship.
+7.	The Local table contains the local fire report code that uniquely identifies an incident report to a reporting unit. It is linked in a zero to many relationship with the Fpa_source_data table.
+8.	The Source_Reporting table contains details of source unit preparing the fire report along with the source type and and system description. As one source agency can prepare report for multiple fires, we have a one to many relationship with the Fpa_source_data table.
+9.	The INCIDENT table contains the incident identifier details from the ICS-209 report and is connected in a one to many relationship with the Fpa_source_data table.
+10.	The NWCG_Reporting table contains the details of the reporting agency. We assume that one reporting agency can prepare reports for multiple fires. Hence, we have a one to many relationship with Fpa_source_data table.
+11.	The NWCG_ActiveUnitID table contains details about the NWCG agency. It has a one to one relationship with the NWCG_Reporting table.
+12.	The NWCG_Location table contains the details of the location of the NWCG Agency. We have identified Code as the unique primary key attribute.
+13.	The NWCG_ActiveUnitId can have multiple Locations but the NWCG_Location is linked to only one record in the NWCG_ActiveUnitID table.
+14.	The MTBS table contains the incident identifier details from the MTBS datasets. It is linked to the Fire table in a zero to many relationship.
+15.	The Stat_Info table consists information on the statistical description of the fire and is linked to the fires table in a one to many relationship.
+16.	The FIPS table consists information on the FIPS publication information on the counties and is linked to the fires table in a zero to many relationship.
+17.	We have assumed the FOD_ID to be the primary key to the Fires table.
+18.	We have assumed the FPA_ID to be the unique identifier of the Fpa_source_data table. This will ensure that source table contains data of reporting agencies collecting data on fire.
+
+Data Model in 3NF
+1.	FPA_ID acts as the unique identifier for Source table. Every attribute in this table is unique, with no multi-part values and non-primary key columns entirely dependant on primary key.
+2.	The partial dependency with every value is taken care of through dividing the data into multiple tables.
+3.	All keys in all tables are related with foreign keys and primary keys and relations are developed using the data structure.
