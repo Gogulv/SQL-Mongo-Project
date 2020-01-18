@@ -1,0 +1,24 @@
+Question
+One advocacy group says human actions and not Nature is to blame for most wildfires. Write a query that supports this statement.
+
+Notes/Comments About MongoDB Query/Code and Results (Include # of Documents in Result)
+
+1.  We assume every entry in the Fire table as a wildfire. We have filtered the STAT_CAUSE_CODE to specific actions for humans and nature.
+Human Actions are -> Arson, Children, Equipment Use, Smoking, Campfire, RailRoad, PowerLine, Fireworks, Debris Burning
+Nature Actions are -> Lightning
+2.  We have given the output at each stage of the query. By the following result, we conclude that fires due to human actions are more than fires due to nature causes and validates the SQL query output.
+3.  We have obtained 1111469 fire records due to human nature and 278468 fire record due to nature cause. Hence, we conclude that human actions cause more fires than nature cause. 
+
+Translation
+
+Clean up -> Display the no of wildfires caused by human actions and nature and compare
+
+Translation -> Get the count of fires for human actions and nature actions in separate variables and find the total count of fires due to human cause and nature cause
+
+Code -> 
+var Nature= db.fires.aggregate({$match:{STAT_CAUSE_DESCR:{$in:["Lightning"]}}},{$group:{_id:"$STAT_CAUSE_DESCR",count:{$sum:1}}}},{$sort:{count:1}})
+var b=Nature.toArray()
+var human=db.fires.aggregate({$match:{STAT_CAUSE_DESCR:{$in:["Children","Arson","Equipment Use","Smoking","Campfire", "Debris Burning","Powerline","Structure","Railroad","Fireworks"]}}}, {$group:{_id:"$STAT_CAUSE_DESCR",count:{$sum:1},{$sort:{count:1}})
+var a=human.toArray()
+var count=0
+for(i in a){count=count+a[i]["count"]}
