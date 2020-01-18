@@ -1,0 +1,15 @@
+Question
+Which forest had the least number of fires?
+
+Notes/Comments About MongoDB Query/Code and Results (Include # of Documents in Result)
+
+1.  We have considered the same assumptions as with the SQL query, i.e., every entry in the Fire table as a wildfire. We run the query to find the least number of fires for each forest and order by the name of the forest.
+
+Our output contains documents which are grouped by forest name and respective wildfires count. The number of records obtained are 195. Thus, 195 forests have wildfires that have a count of 1 and are the least wildfires.
+
+Translation
+
+Cleanup -> find the forests which has the least number of fires 
+
+Code -> display the forests and count of fires = 1 and sort the forests. 
+db.fires.aggregate({$group:{_id:"$NWCG_REPORTING_UNIT_NAME",count:{$sum:1}}},{$sort:{count:1}},{$match:{count:{$eq:1}}}).itcount()
