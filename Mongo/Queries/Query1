@@ -1,0 +1,15 @@
+Question
+A leading beverage company has announced a billion-dollar fund for removing debris from forests, rivers and mountains in the US. All states are interested. Which state has the least chance to win a share of the fund?
+
+Notes/Comments About MongoDB Query/Code and Results (Include # of Documents in Result)
+
+1. We have considered the same assumptions as with SQL query, i.e. assumed every entry as a wildfire and filtered stat_cause_code as “Debris Burning” and accounting for the least count because of proportional fund share for number of wildfires.
+2. We have limited the row count to 1 as we are interested in obtaining the least state that wished to win a share of the fund. Hence Number of rows in result -> 1
+
+Translation
+
+Cleanup -> Find the state which has least count for wildfires with stat cause as ”Debris Burning” 
+
+Translation -> Display state with least count for wildfires with stat_cause_code = ”Debris Burning”
+
+Code -> db.fires.aggregate({$match:{STAT_CAUSE_DESCR:”Debris Burning”}}, {$group:{_id:”$STATE”,count:{$sum:1}}},{$sort:{count:1}})
