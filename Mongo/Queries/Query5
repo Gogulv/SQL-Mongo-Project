@@ -1,0 +1,20 @@
+Question
+Which state had more fires in the first half of a calendar year than the second half of the calendar year?
+
+Notes/Comments About MongoDB Query/Code and Results (Include # of Documents in Result)
+
+We have considered the same assumptions as with the SQL query, i.e., every entry in the Fire table as a wildfire and that every fire was discovered and contained in the same year. 
+Our output contains documents grouped by state name and count of fires in first half of calendar year. The number of documents obtained here is 40. Thus, we have 40 states which has count of fires greater in first half of year than second half.
+
+Translation
+
+Cleanup -> Find the state which had more fires in first half than the second half of the calender year
+
+Translation -> Get state with count of fires in first half of year and second half of year in a variable and display the states which have count of fires in first half greator than second half of year
+
+Code -> 
+var first_half=db.fires.aggregate({$match:{DISCOVERY_DOY:{$lte:182}}},{$group:{_id:"$STATE",count:{$sum:1}}})
+var first_half_arr=first_half.toArray() 
+var second_half = db.fires.aggregate({$match:{DISCOVERY_DOY:{$gte:182}}},{$group:{_id:"$STATE",count:{$sum:1}}})
+var second_half_arr=second_half.toArray()
+for (i in first_half_arr) {for (j in second_half_arr) {if(first_half_arr[i]["_id"]==second_half_arr[j]["_id"]){if(first_half_arr[i]["count"]>second_half_arr[j]["count"]){printjson(first_half_arr[i])}}}}
