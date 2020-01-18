@@ -1,0 +1,19 @@
+Question
+What were the forests that had no fires that lasted more than two days?
+
+Notes/Comments About MongoDB Query/Code and Results (Include # of Documents in Result)
+
+1.  We have considered the same assumptions as with SQL query, i.e., assumed that every fire was discovered and contained in the same year. Hence, we subtract Discovery_DOY and contained_DOY which gives us the duration of fire.
+2.  As we need to have fires no fires more than 2 days, we assume that 2 days means a difference of 1. i.e if Discovery_DOY is 200 and contained_DOY is 201, then their difference is 2 whereas absolute difference 
+
+Our output contains documents grouped by forest names and count of fires in the forest that were contained before 2 days. We have obtained 1228 documents.
+
+Translation
+
+Cleanup -> Display the forests which had no fires which had not lasted more than 2 days
+
+Translation -> Display the forests which had no fires with difference of Discovery_DOY and contained_DOY as 2 days
+
+Code ->
+db.fires.aggregate({$project:{ NWCG_REPORTING_UNIT_NAME:1,   Difference: {$abs :{$subtract:["$CONT_DOY","$DISCOVERY_DOY"]}} }},{$match:{Difference:{$lte:1}}},{$group:{_id:"$NWCG_REPORTING_UNIT_NAME", count : {$sum:1}}}).count()
+Screen Shot of MongoDB Query/Code and Results
